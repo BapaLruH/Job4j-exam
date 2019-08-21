@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Job4j Exam</string>
+    <string name="radiobutton">RadioButton</string>
+    <string name="hello_evgeny">Hello, Evgeny!</string>
+    <string name="prev">Назад</string>
+    <string name="next">Далее</string>
+</resources>
