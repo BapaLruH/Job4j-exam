@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Job4j Exam</string>
+    <string name="radiobutton">RadioButton</string>
+    <string name="hello_evgeny">Hello, Evgeny!</string>
+    <string name="prev">back</string>
+    <string name="next">next</string>
+    <string name="objName">Object name</string>
+    <string name="address">Address</string>
+    <string name="fio">First and last name</string>
+    <string name="temperature">Air temperature</string>
+    <string name="humidity">Air humidity</string>
+    <string name="atmPressure">Atmospheric pressure</string>
+    <string name="repNumber">Report number</string>
+    <string name="city">City</string>
+    <string name="date">Report date</string>
+
+    <string name="domain_prompt">Select region</string>
+    <string-array name="domain_arrays">
+        <item>Select region</item>
+        <item>Moscow province</item>
+        <item>St.Petersburg</item>
+    </string-array>
+</resources>

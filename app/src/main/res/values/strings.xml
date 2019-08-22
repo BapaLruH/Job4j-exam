@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Job4j Exam</string>
-    <string name="radiobutton">RadioButton</string>
-    <string name="hello_evgeny">Hello, Evgeny!</string>
+    <string name="app_name">Пример макета</string>
+    <string name="radiobutton">Радио кнопка</string>
+    <string name="hello_evgeny">Привет, Евгений!</string>
     <string name="prev">Назад</string>
     <string name="next">Далее</string>
     <string name="objName">Имя объекта</string>
@@ -15,7 +15,6 @@
     <string name="date">Дата отчета</string>
 
     <string name="domain_prompt">Выберите область</string>
-    <string name="exp_date">Дата проведения испытания</string>
     <string-array name="domain_arrays">
         <item>Выберите область</item>
         <item>Московская</item>

@@ -16,16 +16,12 @@
 
             <TextView
                 android:id="@+id/tvCity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:width="145dp"
+                style="@style/mainTextViewButtonStyle.width145"
                 android:text="@string/city" />
 
             <Spinner
                 android:id="@+id/spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                style="@style/mainTextEditSpinnerStyle.weight1"
                 android:entries="@array/domain_arrays"
                 android:prompt="@string/domain_prompt"
                 android:spinnerMode="dialog" />
@@ -38,16 +34,12 @@
 
             <TextView
                 android:id="@+id/tvObjName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:width="145dp"
+                style="@style/mainTextViewButtonStyle.width145"
                 android:text="@string/objName" />
 
             <EditText
                 android:id="@+id/etObjName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
+                style="@style/mainTextEditSpinnerStyle.ems"
                 android:hint="@string/objName"
                 android:inputType="textPersonName" />
         </LinearLayout>
@@ -59,16 +51,12 @@
 
             <TextView
                 android:id="@+id/tvAddress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:width="145dp"
+                style="@style/mainTextViewButtonStyle.width145"
                 android:text="@string/address" />
 
             <EditText
                 android:id="@+id/etAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
+                style="@style/mainTextEditSpinnerStyle.ems"
                 android:hint="@string/address"
                 android:inputType="textPersonName" />
         </LinearLayout>
@@ -80,16 +68,12 @@
 
             <TextView
                 android:id="@+id/tvFio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:width="145dp"
+                style="@style/mainTextViewButtonStyle.width145"
                 android:text="@string/fio" />
 
             <EditText
                 android:id="@+id/etFio"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
+                style="@style/mainTextEditSpinnerStyle.ems"
                 android:hint="@string/fio"
                 android:inputType="textPersonName" />
         </LinearLayout>
@@ -101,16 +85,12 @@
 
             <TextView
                 android:id="@+id/tvTemp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:width="145dp"
+                style="@style/mainTextViewButtonStyle.width145"
                 android:text="@string/temperature" />
 
             <EditText
                 android:id="@+id/etTemp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
+                style="@style/mainTextEditSpinnerStyle.ems"
                 android:hint="@string/temperature"
                 android:inputType="numberDecimal" />
         </LinearLayout>
@@ -122,16 +102,12 @@
 
             <TextView
                 android:id="@+id/tvHumidity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:width="145dp"
+                style="@style/mainTextViewButtonStyle.width145"
                 android:text="@string/humidity" />
 
             <EditText
                 android:id="@+id/etHumidity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
+                style="@style/mainTextEditSpinnerStyle.ems"
                 android:hint="@string/humidity"
                 android:inputType="numberDecimal" />
         </LinearLayout>
@@ -143,16 +119,12 @@
 
             <TextView
                 android:id="@+id/tvAtmPressure"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:width="145dp"
+                style="@style/mainTextViewButtonStyle.width145"
                 android:text="@string/atmPressure" />
 
             <EditText
                 android:id="@+id/etAtmPressure"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
+                style="@style/mainTextEditSpinnerStyle.ems"
                 android:hint="@string/atmPressure"
                 android:inputType="numberDecimal" />
         </LinearLayout>
@@ -164,16 +136,12 @@
 
             <TextView
                 android:id="@+id/tvRepNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:width="145dp"
+                style="@style/mainTextViewButtonStyle.width145"
                 android:text="@string/repNumber" />
 
             <EditText
                 android:id="@+id/etRepNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
+                style="@style/mainTextEditSpinnerStyle.ems"
                 android:hint="@string/repNumber"
                 android:inputType="number" />
         </LinearLayout>
@@ -185,9 +153,7 @@
 
             <TextView
                 android:id="@+id/tvDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:width="145dp"
+                style="@style/mainTextViewButtonStyle.width145"
                 android:text="@string/date" />
 
             <TextView
@@ -206,16 +172,12 @@
 
             <Button
                 android:id="@+id/btnPrev"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                style="@style/mainTextViewButtonStyle.weight1"
                 android:text="@string/prev" />
 
             <Button
                 android:id="@+id/btnNext"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                style="@style/mainTextViewButtonStyle.weight1"
                 android:text="@string/next" />
         </LinearLayout>
 
