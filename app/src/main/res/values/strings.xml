@@ -4,4 +4,21 @@
     <string name="hello_evgeny">Hello, Evgeny!</string>
     <string name="prev">Назад</string>
     <string name="next">Далее</string>
+    <string name="objName">Имя объекта</string>
+    <string name="address">Улица и дом</string>
+    <string name="fio">Фио заказчика</string>
+    <string name="temperature">Температура воздуха</string>
+    <string name="humidity">Влажность воздуха</string>
+    <string name="atmPressure">Атмосферное давление</string>
+    <string name="repNumber">Номер отчета</string>
+    <string name="city">Город</string>
+    <string name="date">Дата отчета</string>
+
+    <string name="domain_prompt">Выберите область</string>
+    <string name="exp_date">Дата проведения испытания</string>
+    <string-array name="domain_arrays">
+        <item>Выберите область</item>
+        <item>Московская</item>
+        <item>СПб</item>
+    </string-array>
 </resources>
