@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">mvc</string>
+    <string name="radiobutton">RadioButton</string>
+    <string name="hello">Hello, Evgeny!</string>
+    <string name="prev">Назад</string>
+    <string name="next">Далее</string>
+    <string name="complete">Завершить</string>
+</resources>
