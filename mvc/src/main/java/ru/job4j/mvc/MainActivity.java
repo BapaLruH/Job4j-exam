@@ -46,24 +46,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         this.fillForm();
         Button next = findViewById(R.id.next);
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (showAnswer()) {
-                    position++;
-                    fillForm();
-                }
-
-            }
-        });
+        next.setOnClickListener(this::btnNext);
         Button previous = findViewById(R.id.prev);
-        previous.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                position--;
-                fillForm();
-            }
-        });
+        previous.setOnClickListener(this::btnPrev);
     }
 
     private void fillForm() {
@@ -125,5 +110,17 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         outState.putInt("position", this.position);
         outState.putIntArray("selectedAnswers", this.selectedAnswers);
+    }
+
+    private void btnNext(View view) {
+        if (showAnswer()) {
+            position++;
+            fillForm();
+        }
+    }
+
+    private void btnPrev(View view) {
+        position--;
+        fillForm();
     }
 }
