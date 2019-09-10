@@ -1,7 +1,9 @@
 package ru.job4j.mvc;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -9,6 +11,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,24 +48,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.fillForm();
-        Button next = findViewById(R.id.next);
-        next.setOnClickListener(this::btnNext);
-        Button previous = findViewById(R.id.prev);
-        previous.setOnClickListener(this::btnPrev);
     }
 
     private void fillForm() {
         findViewById(R.id.prev).setEnabled(position != 0);
         Button next = findViewById(R.id.next);
-        next.setEnabled(position != questions.size());
-        if (position == questions.size() - 1) {
+        if (position == questions.size() || position == questions.size() - 1) {
             next.setText(R.string.complete);
         } else {
             next.setText(R.string.next);
         }
         final TextView text = findViewById(R.id.question);
         RadioGroup variants = findViewById(R.id.variants);
-        if (position != questions.size()){
+        if (position != questions.size()) {
             Question question = this.questions.get(this.position);
             text.setText(question.getText());
             variants.clearCheck();
@@ -75,25 +73,23 @@ public class MainActivity extends AppCompatActivity {
             }
             variants.check(selectedAnswers[position]);
         } else {
-            text.setText(String.format("Selected answers: %s", Arrays.toString(selectedAnswers)));
-            for (int i = 0; i != variants.getChildCount(); i++) {
-                variants.getChildAt(i).setVisibility(View.INVISIBLE);
-            }
+            Intent resultActivity = new Intent(this, ResultActivity.class);
+            resultActivity.putExtra("questions", (Serializable) questions);
+            resultActivity.putExtra("answers", selectedAnswers);
+            startActivity(resultActivity);
+            position--;
         }
     }
 
     private boolean showAnswer() {
         RadioGroup variants = findViewById(R.id.variants);
         int id = variants.getCheckedRadioButtonId();
-        String text = "Please select one of the following options";
-        boolean executionResult = false;
-        if (id != -1) {
-            Question question = this.questions.get(position);
-            text = "Your answer is " + id + ", correct is " + question.getAnswer();
-            selectedAnswers[position] = id;
-            executionResult = true;
+        boolean executionResult = true;
+        selectedAnswers[position] = id;
+        if (id == 0) {
+            executionResult = false;
+            Toast.makeText(this, "Please select one of the following options", Toast.LENGTH_SHORT).show();
         }
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
         return executionResult;
     }
 
@@ -112,15 +108,24 @@ public class MainActivity extends AppCompatActivity {
         outState.putIntArray("selectedAnswers", this.selectedAnswers);
     }
 
-    private void btnNext(View view) {
+    public void btnNext(View view) {
         if (showAnswer()) {
             position++;
             fillForm();
         }
     }
 
-    private void btnPrev(View view) {
+    public void btnPrev(View view) {
         position--;
         fillForm();
+    }
+
+    public void btnHint(View view) {
+        DialogFragment confDialog = new ConfirmationDialog();
+        Bundle bundle = new Bundle();
+        bundle.putString("question", questions.get(position).getText());
+        bundle.putInt("answer", questions.get(position).getAnswer());
+        confDialog.setArguments(bundle);
+        confDialog.show(getSupportFragmentManager(), "ConfirmationDialog");
     }
 }

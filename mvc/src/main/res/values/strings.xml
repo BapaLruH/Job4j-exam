@@ -5,4 +5,9 @@
     <string name="prev">Назад</string>
     <string name="next">Далее</string>
     <string name="complete">Завершить</string>
+    <string name="hint">Подсказка</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="btnBack">Назад</string>
+    <string name="tvResultPage">Ваши ответы:</string>
 </resources>
