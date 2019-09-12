@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">UIFragments</string>
+    <string name="first_fragment">First fragment!!!</string>
+    <string name="next_fragment">Next fragment</string>
+    <string name="second_fragment">Second fragment</string>
+    <string name="btnBack">Back</string>
+</resources>
