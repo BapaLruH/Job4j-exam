@@ -12,35 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final List<Question> questions = Arrays.asList(
-            new Question(
-                    1, "How many primitive variables does Java have?",
-                    Arrays.asList(
-                            new Option(1, "1.1"), new Option(2, "1.2"),
-                            new Option(3, "1.3"), new Option(4, "1.4")
-                    ), 4
-            ),
-            new Question(
-                    2, "What is Java Virtual Machine?",
-                    Arrays.asList(
-                            new Option(1, "2.1"), new Option(2, "2.2"),
-                            new Option(3, "2.3"), new Option(4, "2.4")
-                    ), 4
-            ),
-            new Question(
-                    3, "What is happen if we try unboxing null?",
-                    Arrays.asList(
-                            new Option(1, "3.1"), new Option(2, "3.2"),
-                            new Option(3, "3.3"), new Option(4, "3.4")
-                    ), 4
-            )
-    );
-    private int[] selectedAnswers = new int[questions.size()];
+    private final QuestionsStorage storage = QuestionsStorage.getInstance();
+    private int[] selectedAnswers = new int[storage.size()];
     private int position = 0;
 
     @Override
@@ -53,15 +29,15 @@ public class MainActivity extends AppCompatActivity {
     private void fillForm() {
         findViewById(R.id.prev).setEnabled(position != 0);
         Button next = findViewById(R.id.next);
-        if (position == questions.size() || position == questions.size() - 1) {
+        if (position == storage.size() || position == storage.size() - 1) {
             next.setText(R.string.complete);
         } else {
             next.setText(R.string.next);
         }
         final TextView text = findViewById(R.id.question);
         RadioGroup variants = findViewById(R.id.variants);
-        if (position != questions.size()) {
-            Question question = this.questions.get(this.position);
+        if (position != storage.size()) {
+            Question question = this.storage.getQuestion(this.position);
             text.setText(question.getText());
             variants.clearCheck();
             for (int i = 0; i != variants.getChildCount(); i++) {
@@ -74,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             variants.check(selectedAnswers[position]);
         } else {
             Intent resultActivity = new Intent(this, ResultActivity.class);
-            resultActivity.putExtra("questions", (Serializable) questions);
+            resultActivity.putExtra("questions", (Serializable) storage.getAllQuestions());
             resultActivity.putExtra("answers", selectedAnswers);
             startActivity(resultActivity);
             position--;
@@ -93,21 +69,6 @@ public class MainActivity extends AppCompatActivity {
         return executionResult;
     }
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        this.position = savedInstanceState.getInt("position");
-        this.selectedAnswers = savedInstanceState.getIntArray("selectedAnswers");
-        fillForm();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt("position", this.position);
-        outState.putIntArray("selectedAnswers", this.selectedAnswers);
-    }
-
     public void btnNext(View view) {
         if (showAnswer()) {
             position++;
@@ -123,9 +84,28 @@ public class MainActivity extends AppCompatActivity {
     public void btnHint(View view) {
         DialogFragment confDialog = new ConfirmationDialog();
         Bundle bundle = new Bundle();
-        bundle.putString("question", questions.get(position).getText());
-        bundle.putInt("answer", questions.get(position).getAnswer());
+        bundle.putString("question", storage.getQuestion(position).getText());
+        bundle.putInt("answer", storage.getQuestion(position).getAnswer());
         confDialog.setArguments(bundle);
         confDialog.show(getSupportFragmentManager(), "ConfirmationDialog");
+    }
+
+    public void btnBack(View view) {
+        onBackPressed();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("position", this.position);
+        outState.putIntArray("selectedAnswers", this.selectedAnswers);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        this.position = savedInstanceState.getInt("position");
+        this.selectedAnswers = savedInstanceState.getIntArray("selectedAnswers");
+        fillForm();
     }
 }

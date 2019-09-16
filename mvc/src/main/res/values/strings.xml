@@ -10,4 +10,8 @@
     <string name="no">Нет</string>
     <string name="btnBack">Назад</string>
     <string name="tvResultPage">Ваши ответы:</string>
+    <string name="info">info</string>
+    <string name="date">date</string>
+    <string name="result">result</string>
+    <string name="ExamsList">Список экзаменов</string>
 </resources>
