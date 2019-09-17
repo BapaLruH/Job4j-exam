@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Список заданий</string>
+    <string name="btnCreate">Создать</string>
+    <string name="Tasks">Список заданий</string>
+    <string name="labelName">Наименование:</string>
+    <string name="labelCreatedDate">Создано:</string>
+    <string name="labelClosedDate">Закрыто:</string>
+    <string name="labelDescription">Описание:</string>
+    <string name="btnSaveText">Сохранить</string>
+    <string name="btnUpdate">Изменить</string>
+    <string name="btnBack">Назад</string>
+    <string name="testName">Наименование...</string>
+    <string name="testDescription">Описание.......</string>
+    <string name="testTime">12.12.2012</string>
+    <string name="emptyName">Создание нового задания</string>
+</resources>
