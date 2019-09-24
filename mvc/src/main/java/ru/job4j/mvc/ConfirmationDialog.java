@@ -21,11 +21,16 @@ public class ConfirmationDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        Bundle args = this.getArguments();
+        String dialogText = "Вы уверены, что хотите воспользоваться подсказкой?";
+        if (args != null) {
+            dialogText = args.getString("dialog_text");
+        }
         AlertDialog.Builder adb = new AlertDialog.Builder(getActivity())
                 .setTitle("Вопрос")
                 .setPositiveButton(R.string.yes, (dialog, which) -> callback.onPositiveDialogClick(ConfirmationDialog.this))
                 .setNegativeButton(R.string.no, (dialog, which) -> callback.onNegativeDialogClick(ConfirmationDialog.this))
-                .setMessage("Вы уверены, что хотите воспользоваться подсказкой?");
+                .setMessage(dialogText);
         return adb.create();
     }
 

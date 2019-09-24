@@ -10,14 +10,29 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ExamHolder> {
-    private final List<Exam> exams;
+    private List<Exam> exams;
 
     public ExamAdapter(List<Exam> exams) {
         this.exams = exams;
+    }
+
+    public void addNewElement(Exam exam) {
+        exams.add(exam);
+        notifyDataSetChanged();
+    }
+
+    public void removeAllExams() {
+        exams = new ArrayList<>();
+        notifyDataSetChanged();
+    }
+
+    public int getSizeAdapter() {
+        return exams.size();
     }
 
     @NonNull
