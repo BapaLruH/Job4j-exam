@@ -8,10 +8,14 @@
     <string name="hint">Подсказка</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
-    <string name="btnBack">Назад</string>
-    <string name="tvResultPage">Ваши ответы:</string>
+    <string name="btn_back">Назад</string>
+    <string name="tv_result_page">Ваши ответы:</string>
     <string name="info">info</string>
     <string name="date">date</string>
     <string name="result">result</string>
-    <string name="ExamsList">Список экзаменов</string>
+    <string name="exams_list">Список экзаменов</string>
+    <string name="tv_label_date_time">Дата и время</string>
+    <string name="btn_label_date">Дата</string>
+    <string name="btn_label_time">Время</string>
+    <string name="btn_date_time_fragment">Date/time fragment</string>
 </resources>

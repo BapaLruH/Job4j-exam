@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import java.io.Serializable;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ConfirmationDialog.ConfirmationDialogListener {
 
     private final QuestionsStorage storage = QuestionsStorage.getInstance();
     private int[] selectedAnswers = new int[storage.size()];
@@ -83,10 +83,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void btnHint(View view) {
         DialogFragment confDialog = new ConfirmationDialog();
-        Bundle bundle = new Bundle();
-        bundle.putString("question", storage.getQuestion(position).getText());
-        bundle.putInt("answer", storage.getQuestion(position).getAnswer());
-        confDialog.setArguments(bundle);
         confDialog.show(getSupportFragmentManager(), "ConfirmationDialog");
     }
 
@@ -107,5 +103,20 @@ public class MainActivity extends AppCompatActivity {
         this.position = savedInstanceState.getInt("position");
         this.selectedAnswers = savedInstanceState.getIntArray("selectedAnswers");
         fillForm();
+    }
+
+    @Override
+    public void onPositiveDialogClick(DialogFragment dialog) {
+        int answer = storage.getQuestion(this.position).getAnswer();
+        String question = storage.getQuestion(this.position).getText();
+        Intent hintIntent = new Intent(this, HintActivity.class);
+        hintIntent.putExtra("HINT_FOR", question);
+        hintIntent.putExtra("answer", answer);
+        startActivity(hintIntent);
+    }
+
+    @Override
+    public void onNegativeDialogClick(DialogFragment dialog) {
+        Toast.makeText(this, "Молодец!", Toast.LENGTH_SHORT).show();
     }
 }

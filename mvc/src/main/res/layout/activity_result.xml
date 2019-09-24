@@ -9,7 +9,7 @@
         android:id="@+id/tvResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/tvResultPage"
+        android:text="@string/tv_result_page"
         android:textSize="20sp" />
 
     <ListView
@@ -24,5 +24,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="btnBack"
-        android:text="@string/btnBack" />
+        android:text="@string/btn_back" />
 </LinearLayout>

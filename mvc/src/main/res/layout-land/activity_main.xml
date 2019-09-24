@@ -9,7 +9,7 @@
         android:id="@+id/tvBack"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/ExamsList"
+        android:text="@string/exams_list"
         android:gravity="start"
         android:layout_marginHorizontal="10dp"
         android:onClick="btnBack"/>
