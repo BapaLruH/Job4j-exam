@@ -1,1 +1,1 @@
-include ':app', ':activitylifecycle', ':mvc', ':uifragments', ':todolist'
+include ':app', ':activitylifecycle', ':mvc', ':uifragments', ':todolist', ':workersstore'

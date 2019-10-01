@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Список работников</string>
+    <string name="btn_clean_filter">очистить</string>
+    <string name="hint_filter">Фильтр: </string>
+    <string name="label_first_last_name">Наименовение</string>
+    <string name="label_date">12.12.2012</string>
+    <string name="label_profession">Профессия</string>
+    <string name="label_button_remove">X</string>
+    <string name="label_tab_one">Работники</string>
+    <string name="label_tab_two">Должности</string>
+    <string name="label_prof_code">код</string>
+    <string name="label_prof_name">специальность</string>
+    <string name="label_menu_add_profession">Добавить</string>
+    <string name="label_menu_add_worker">Добавить</string>
+    <string name="label_menu_clear_worker">Удалить всех</string>
+    <string name="hint_w_c_name">Имя:</string>
+    <string name="hint_w_c_last_name">Фамилия:</string>
+    <string name="label_w_c_birthday">День рождения:</string>
+    <string name="label_w_c_profession">Должность:</string>
+    <string name="label_w_c">Создание нового работника</string>
+    <string name="label_prof">Создание должности</string>
+    <string name="hint_prof_name">Наименование</string>
+    <string name="hint_prof_spec_code">Код специальности</string>
+    <string name="btn_save_label">Сохранить</string>
+    <string name="btn_cancel_label">Отменить</string>
+    <string name="btn_change_label">Изменить</string>
+    <string name="btn_back_label">Назад</string>
+
+</resources>
