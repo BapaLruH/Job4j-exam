@@ -1,5 +1,7 @@
 package ru.job4j.backgroundthread;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,6 +11,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Locale;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import java.util.Arrays;
 
@@ -17,6 +26,10 @@ public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = "Dev_tag";
     private Thread testThread;
     private Thread testRunnable;
+    private TextView tvCount;
+    private ImageView imgV, imgV2;
+    private String[] imgsUrl;
+    private AtomicInteger index = new AtomicInteger(0);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +37,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        createUrlList();
+        tvCount = findViewById(R.id.tvCount);
+        imgV = findViewById(R.id.imgV);
+        imgV2 = findViewById(R.id.imgV2);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -33,6 +51,14 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    private void createUrlList() {
+        this.imgsUrl = new String[]{
+                "http://www.fonstola.ru/pic/201604/2560x1440/fonstola.ru-229435.jpg",
+                "http://www.kartinkijane.ru/pic/201304/1440x900/kartinkijane.ru-16213.jpg",
+                "http://www.hqwallpapers.ru/wallpapers/nature/skala-i-okean.jpg"
+        };
     }
 
     public void startThread(View view) {
@@ -45,6 +71,11 @@ public class MainActivity extends AppCompatActivity {
     public void stopThread(View view) {
         testThread.interrupt();
         testRunnable.interrupt();
+    }
+
+    public void loadImage(View view) {
+        new Thread(new ImagesLoader(imgV)).start();
+        new Thread(new ImagesLoader(imgV2)).start();
     }
 
     @Override
@@ -61,6 +92,36 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    class ImagesLoader implements Runnable {
+        private final ImageView imageView;
+
+        ImagesLoader(ImageView imageView) {
+            this.imageView = imageView;
+        }
+
+        @Override
+        public void run() {
+            if (index.get() >= imgsUrl.length) index.set(0);
+            final Bitmap img = loadImageFromNetwork(imgsUrl[index.getAndIncrement()]);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    imageView.setImageBitmap(img);
+                }
+            });
+        }
+
+        private Bitmap loadImageFromNetwork(String url) {
+            Bitmap bitmap = null;
+            try {
+                bitmap = BitmapFactory.decodeStream((InputStream) new URL(url).getContent());
+            } catch (Exception e) {
+                Log.e(LOG_TAG, e.getMessage());
+            }
+            return bitmap;
+        }
     }
 
     class TestThread extends Thread {
@@ -92,6 +153,13 @@ public class MainActivity extends AppCompatActivity {
     private void getRunMethod(int times, String sourceName) {
         int count = 0;
         while (count != times && !Thread.currentThread().isInterrupted()) {
+            final int finalCount = count;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    tvCount.setText(String.format(Locale.getDefault(), "%d%%", finalCount * 10));
+                }
+            });
             Log.d(LOG_TAG, "start" + sourceName + ": " + count);
             count++;
             if (Thread.currentThread().isInterrupted()) {
@@ -116,3 +184,5 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }
+
+
