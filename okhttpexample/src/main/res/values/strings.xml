@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">OkHttpExample</string>
+    <string name="hint_login">login</string>
+    <string name="title_login_page">Login page</string>
+    <string name="hint_password">password</string>
+    <string name="label_sign_in">sign in</string>
+</resources>
