@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">RetrofitExample</string>
+    <string name="label_get_posts">get posts</string>
+    <string name="label_get_post_by_id">get post by id</string>
+    <string name="label_get_post_by_query">get post by query</string>
+    <string name="label_get_post_by_parameters">get post by parameters</string>
+    <string name="label_get_comments">get comments</string>
+    <string name="hint_id">id:</string>
+    <string name="label_title_comments_by_post">Comments by post №: %s</string>
+    <string name="label_comment_text">text:</string>
+    <string name="label_comment_email">email:</string>
+    <string name="btn_id">Id</string>
+    <string name="btn_query">Query</string>
+    <string name="btn_map">Map</string>
+</resources>
