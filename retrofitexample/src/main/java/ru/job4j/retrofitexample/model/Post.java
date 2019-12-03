@@ -2,27 +2,43 @@ package ru.job4j.retrofitexample.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Post {
-    private int userId;
-    private int id;
+import java.io.Serializable;
+
+public class Post implements Serializable {
+    private Integer userId;
+    private Integer id;
     private String title;
 
     @SerializedName("body")
     private String text;
 
-    public int getUserId() {
+    public Post() {
+    }
+
+    public Post(Integer id, Integer userId, String title, String text) {
+        this(userId, title, text);
+        this.id = id;
+    }
+
+    public Post(Integer userId, String title, String text) {
+        this.userId = userId;
+        this.title = title;
+        this.text = text;
+    }
+
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -36,5 +52,15 @@ public class Post {
 
     public String getText() {
         return text;
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "userId=" + userId +
+                ", id=" + id +
+                ", title='" + title + '\'' +
+                ", text='" + text + '\'' +
+                '}';
     }
 }

@@ -7,7 +7,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Url;
 import ru.job4j.retrofitexample.model.Comment;
 
-public interface GetCommentsAPI {
+public interface CommentsAPI {
     @GET
     Single<List<Comment>> getComments(@Url String url);
 }

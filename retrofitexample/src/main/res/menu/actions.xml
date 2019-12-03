@@ -3,8 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/get_posts"
-        android:title="@string/label_get_posts"
+        android:id="@+id/get_requests"
+        android:title="@string/get_requests"
         android:icon="@drawable/ic_btn_all"
+        app:showAsAction="always|withText" />
+    <item
+        android:id="@+id/post_request"
+        android:title="@string/post_request"
+        android:icon="@drawable/baseline_format_italic_black_18"
+        app:showAsAction="always|withText" />
+    <item
+        android:id="@+id/close"
+        android:title="@string/close"
+        android:icon="@drawable/baseline_close_black_18"
         app:showAsAction="always|withText" />
 </menu>

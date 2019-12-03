@@ -8,8 +8,8 @@ public class RetrofitSingleton {
     private static RetrofitSingleton instance;
     private static final String BASE_URL = "https://jsonplaceholder.typicode.com/";
     private Retrofit mRetrofit;
-    private GetPostsAPI postsAPI;
-    private GetCommentsAPI commentsAPI;
+    private PostsAPI postsAPI;
+    private CommentsAPI commentsAPI;
 
     private RetrofitSingleton() {
         mRetrofit = new Retrofit.Builder()
@@ -17,8 +17,8 @@ public class RetrofitSingleton {
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
-        postsAPI = mRetrofit.create(GetPostsAPI.class);
-        commentsAPI = mRetrofit.create(GetCommentsAPI.class);
+        postsAPI = mRetrofit.create(PostsAPI.class);
+        commentsAPI = mRetrofit.create(CommentsAPI.class);
     }
 
     public static RetrofitSingleton getInstance() {
@@ -28,11 +28,11 @@ public class RetrofitSingleton {
         return instance;
     }
 
-    public GetPostsAPI getPostsAPI() {
+    public PostsAPI getPostsAPI() {
         return postsAPI;
     }
 
-    public GetCommentsAPI getCommentsAPI() {
+    public CommentsAPI getCommentsAPI() {
         return commentsAPI;
     }
 }

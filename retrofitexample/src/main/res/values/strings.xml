@@ -1,15 +1,30 @@
 <resources>
     <string name="app_name">RetrofitExample</string>
+
     <string name="label_get_posts">get posts</string>
     <string name="label_get_post_by_id">get post by id</string>
     <string name="label_get_post_by_query">get post by query</string>
     <string name="label_get_post_by_parameters">get post by parameters</string>
     <string name="label_get_comments">get comments</string>
-    <string name="hint_id">id:</string>
     <string name="label_title_comments_by_post">Comments by post №: %s</string>
     <string name="label_comment_text">text:</string>
     <string name="label_comment_email">email:</string>
+    <string name="text_comments">comments</string>
+    <string name="_8942">⋮</string>
+
+    <string name="get_requests">get requests</string>
+    <string name="post_request">Edit or create post</string>
+    <string name="close">close menu</string>
+
+    <string name="hint_id">id:</string>
+    <string name="hint_text">text</string>
+    <string name="hint_title">title</string>
+    <string name="hint_userid">userId</string>
+    <string name="btn_save">save</string>
+    <string name="btn_patch">patch</string>
     <string name="btn_id">Id</string>
     <string name="btn_query">Query</string>
     <string name="btn_map">Map</string>
+    <string name="btn_post">post</string>
+    <string name="btn_all">All</string>
 </resources>
