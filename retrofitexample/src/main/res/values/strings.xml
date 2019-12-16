@@ -27,4 +27,5 @@
     <string name="btn_map">Map</string>
     <string name="btn_post">post</string>
     <string name="btn_all">All</string>
+    <string name="btn_back">Back</string>
 </resources>

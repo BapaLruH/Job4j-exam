@@ -36,6 +36,39 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         notifyDataSetChanged();
     }
 
+    public void updateItems(List<Post> posts) {
+        for (Post post : posts) {
+            updatePost(post);
+        }
+    }
+
+    public void updatePost(Post post) {
+        int position = getPositionByID(post.getId());
+        if (position !=  -1) {
+            posts.set(position, post);
+            notifyItemChanged(position, post);
+        }
+    }
+
+    public void removeItem(int id) {
+        int position = getPositionByID(id);
+        if (position !=  -1) {
+            posts.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
+    private int getPositionByID(int id) {
+        int position = -1;
+        for (int i = 0; i < posts.size(); i++) {
+            if (posts.get(i).getId().equals(id)) {
+                position = i;
+                break;
+            }
+        }
+        return position;
+    }
+
     @NonNull
     @Override
     public PostHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {

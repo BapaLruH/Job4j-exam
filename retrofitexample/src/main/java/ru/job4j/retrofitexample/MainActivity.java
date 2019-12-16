@@ -11,14 +11,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -33,7 +31,6 @@ public class MainActivity extends AppCompatActivity implements FragmentGetMethod
     private CommonApiUtil apiUtil;
     private PostAdapter postAdapter;
     private RecyclerView rvPosts;
-    private TextView statusText;
     private FragmentManager fManager;
     private Fragment fragment;
 
@@ -42,12 +39,11 @@ public class MainActivity extends AppCompatActivity implements FragmentGetMethod
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         fManager = getSupportFragmentManager();
-        apiUtil = CommonApiUtil.getInstance();
+        apiUtil = CommonApiUtil.getInstance(this);
         postAdapter = new PostAdapter(this, this);
         rvPosts = findViewById(R.id.rv_posts);
         rvPosts.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         rvPosts.setAdapter(postAdapter);
-        statusText = findViewById(R.id.status_text);
     }
 
     @Override
@@ -87,50 +83,98 @@ public class MainActivity extends AppCompatActivity implements FragmentGetMethod
 
     @Override
     public void onGetPostsClicked() {
-        getResponseHandling(apiUtil.getPosts());
+        responseHandler(apiUtil.getPosts(), null, null);
     }
 
     @Override
     public void onGetPostByIdClicked(int id) {
         if (id > 0) {
-            getResponseHandling(apiUtil.getPostById(id));
+            responseHandler(apiUtil.getPostById(id), null, null);
         }
     }
 
     @Override
     public void onGetPostByQueryClicked(int id) {
         if (id > 0) {
-            getResponseHandling(apiUtil.getPostByQuery(id));
+            responseHandler(apiUtil.getPostByQuery(id), null, null);
         }
     }
 
     @Override
     public void onGetPostByMapQueryClicked(Map<String, String> ids) {
         if (!ids.isEmpty()) {
-            getResponseHandling(apiUtil.getPostByQueryMap(ids));
+            responseHandler(apiUtil.getPostByQueryMap(ids), null, null);
         }
     }
 
     @Override
     public void onSaveButtonClick(Post post) {
         if (post.getId() == null) {
-            updResponseHandling(apiUtil.createPost(post), "added");
+            responseHandler(apiUtil.createPost(post), "added", null);
         } else {
-            updResponseHandling(apiUtil.putPost(post), "updated");
+            responseHandler(apiUtil.putPost(post), "updated", null);
         }
     }
 
     @Override
     public void onPatchButtonClick(Post post) {
         if (post.getId() != null) {
-            updResponseHandling(apiUtil.patchPost(post), "updated");
+            responseHandler(apiUtil.patchPost(post), "patched", null);
         }
     }
 
     @Override
     public void onClickDelete(int id) {
         if (id > 0) {
-            delResponseHandling(apiUtil.deletePost(id), id);
+            responseHandler(apiUtil.deletePost(id), "deleted", id);
+        }
+    }
+
+    private void responseHandler(Single<? extends Response> single, String operation, Integer id) {
+
+        single.observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSingleObserver<Response>() {
+                    @Override
+                    public void onSuccess(Response response) {
+                        String rsl = "";
+                        if (response.isSuccessful()) {
+                            Object object = response.body();
+                            if (object instanceof List) {
+                                postAdapter.setPosts((List<Post>) object);
+                            } else if (object instanceof Post) {
+                                Post post = (Post) object;
+                                if (operation != null) {
+                                    postAdapter.updateItems(Collections.singletonList(post));
+                                } else {
+                                    postAdapter.setPosts(Collections.singletonList(post));
+                                }
+                                rsl = getStringByOperation(operation, post.getId());
+                            } else {
+                                postAdapter.removeItem(id);
+                                rsl = getStringByOperation(operation, id);
+                            }
+                        }
+                        setStatusText(rsl);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, e.getLocalizedMessage());
+                    }
+                });
+    }
+
+    private String getStringByOperation(String operation, Integer id) {
+        String rsl = null;
+        if (operation != null && id != null && id > 0) {
+            rsl = String.format("Post id:%s %s", id, operation);
+        }
+        return rsl;
+    }
+
+    private void setStatusText(String text) {
+        if (text != null && !text.isEmpty()) {
+            Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -173,68 +217,5 @@ public class MainActivity extends AppCompatActivity implements FragmentGetMethod
 
     private void addFragment() {
         fManager.beginTransaction().add(R.id.fragments_container, fragment).commit();
-    }
-
-    private void getResponseHandling(Single<List<Post>> single) {
-        single.observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<List<Post>>() {
-                    @Override
-                    public void onSuccess(List<Post> posts) {
-                        postAdapter.setPosts(posts);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e(TAG, e.getLocalizedMessage());
-                    }
-                });
-    }
-
-    private void updResponseHandling(Single<Response<Post>> single, String operation) {
-        single.observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<Response<Post>>() {
-                    @Override
-                    public void onSuccess(Response<Post> response) {
-                        removeFragment();
-                        setStatusText(String.format("Status code: %s, post id: %s", response.code(), operation));
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e(TAG, e.getLocalizedMessage());
-                    }
-                });
-    }
-
-    private void delResponseHandling(Single<Response<Void>> single, int id) {
-        single.observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<Response<Void>>() {
-                               @Override
-                               public void onSuccess(Response<Void> voidResponse) {
-                                   setStatusText(String.format("Status code: %s, post id:%s deleted", voidResponse.code(), id));
-                               }
-
-                               @Override
-                               public void onError(Throwable e) {
-                                   Log.e(TAG, e.getLocalizedMessage());
-                               }
-                           }
-                );
-    }
-
-    private void setStatusText(String text) {
-        Observable.interval(1, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .takeUntil(aLong -> aLong.intValue() == 5)
-                .doOnSubscribe(disposable -> {
-                    statusText.setVisibility(View.VISIBLE);
-                    statusText.setText(text);
-                })
-                .doOnComplete(() -> {
-                    statusText.setVisibility(View.GONE);
-                    statusText.setText("");
-                })
-                .subscribe();
-
     }
 }

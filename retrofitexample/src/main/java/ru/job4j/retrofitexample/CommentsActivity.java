@@ -11,6 +11,7 @@ import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
+import retrofit2.Response;
 import ru.job4j.retrofitexample.adapter.CommentAdapter;
 import ru.job4j.retrofitexample.model.Comment;
 import ru.job4j.retrofitexample.service.CommonApiUtil;
@@ -40,12 +41,14 @@ public class CommentsActivity extends AppCompatActivity {
     }
 
     private void fillComments(int id) {
-        CommonApiUtil.getInstance().getCommentsById(id)
+        CommonApiUtil.getInstance(this).getCommentsById(id)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<List<Comment>>() {
+                .subscribe(new DisposableSingleObserver<Response<List<Comment>>>() {
                     @Override
-                    public void onSuccess(List<Comment> comments) {
-                        commentAdapter.setComments(comments);
+                    public void onSuccess(Response<List<Comment>> response) {
+                        if (response.isSuccessful()) {
+                            commentAdapter.setComments(response.body());
+                        }
                     }
 
                     @Override

@@ -21,16 +21,16 @@ import ru.job4j.retrofitexample.model.Post;
 
 public interface PostsAPI {
     @GET("posts")
-    Single<List<Post>> getPosts();
+    Single<Response<List<Post>>> getPosts();
 
     @GET("posts/{id}")
-    Single<Post> getPostByID(@Path("id") int postId);
+    Single<Response<Post>> getPostByID(@Path("id") int postId);
 
     @GET("posts")
-    Single<List<Post>> getPost(@Query("id") int postId);
+    Single<Response<List<Post>>> getPost(@Query("id") int postId);
 
     @GET("posts")
-    Single<List<Post>> getPost(@QueryMap Map<String, String> parameters);
+    Single<Response<List<Post>>> getPost(@QueryMap Map<String, String> parameters);
 
     @POST("posts")
     Single<Response<Post>> createPost(@Body Post post);
