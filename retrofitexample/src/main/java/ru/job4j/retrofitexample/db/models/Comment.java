@@ -1,29 +1,33 @@
-package ru.job4j.retrofitexample.model;
+package ru.job4j.retrofitexample.db.models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Comment {
-    private int postId;
-    private int id;
+import ru.job4j.retrofitexample.db.dbhelper.DBClass;
+
+public class Comment implements DBClass {
+    @SerializedName("postId")
+    private Integer post_id;
+    @SerializedName("id")
+    private Integer _id;
     private String name;
     private String email;
     @SerializedName("body")
     private String text;
 
-    public int getPostId() {
-        return postId;
+    public Integer getPost_id() {
+        return post_id;
     }
 
-    public void setPostId(int postId) {
-        this.postId = postId;
+    public void setPost_id(Integer post_id) {
+        this.post_id = post_id;
     }
 
-    public int getId() {
-        return id;
+    public Integer get_id() {
+        return _id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void set_id(Integer _id) {
+        this._id = _id;
     }
 
     public String getName() {

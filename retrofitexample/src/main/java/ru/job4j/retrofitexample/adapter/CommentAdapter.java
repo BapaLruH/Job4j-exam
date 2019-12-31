@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.job4j.retrofitexample.R;
-import ru.job4j.retrofitexample.model.Comment;
+import ru.job4j.retrofitexample.db.models.Comment;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentHolder> {
     private List<Comment> comments;
@@ -36,14 +36,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
     @Override
     public void onBindViewHolder(@NonNull CommentHolder commentHolder, int i) {
         final Comment comment = this.comments.get(i);
-        TextView tvCommentId = commentHolder.view.findViewById(R.id.tv_comment_id);
-        TextView tvCommentName = commentHolder.view.findViewById(R.id.tv_comment_name);
-        TextView tvCommentEmail = commentHolder.view.findViewById(R.id.tv_comment_email);
-        TextView tvCommentText = commentHolder.view.findViewById(R.id.tv_comment_text);
-        tvCommentId.setText(String.format("id: %s", comment.getId()));
-        tvCommentName.setText(comment.getName());
-        tvCommentEmail.setText(comment.getEmail());
-        tvCommentText.setText(comment.getText());
+        commentHolder.tvCommentId.setText(String.format("id: %s", comment.get_id()));
+        commentHolder.tvCommentName.setText(comment.getName());
+        commentHolder.tvCommentEmail.setText(comment.getEmail());
+        commentHolder.tvCommentText.setText(comment.getText());
     }
 
     @Override
@@ -52,11 +48,19 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
     }
 
     public static class CommentHolder extends RecyclerView.ViewHolder {
-        private View view;
+        View view;
+        TextView tvCommentId;
+        TextView tvCommentName;
+        TextView tvCommentEmail;
+        TextView tvCommentText;
 
         public CommentHolder(@NonNull View itemView) {
             super(itemView);
             view = itemView;
+            tvCommentId = view.findViewById(R.id.tv_comment_id);
+            tvCommentName = view.findViewById(R.id.tv_comment_name);
+            tvCommentEmail = view.findViewById(R.id.tv_comment_email);
+            tvCommentText = view.findViewById(R.id.tv_comment_text);
         }
     }
 }

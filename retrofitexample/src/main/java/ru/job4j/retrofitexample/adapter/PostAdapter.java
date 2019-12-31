@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.job4j.retrofitexample.R;
-import ru.job4j.retrofitexample.model.Post;
+import ru.job4j.retrofitexample.db.models.Post;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
     private List<Post> posts;
@@ -43,7 +43,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
     }
 
     public void updatePost(Post post) {
-        int position = getPositionByID(post.getId());
+        int position = getPositionByID(post.get_id());
         if (position !=  -1) {
             posts.set(position, post);
             notifyItemChanged(position, post);
@@ -61,7 +61,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
     private int getPositionByID(int id) {
         int position = -1;
         for (int i = 0; i < posts.size(); i++) {
-            if (posts.get(i).getId().equals(id)) {
+            if (posts.get(i).get_id().equals(id)) {
                 position = i;
                 break;
             }
@@ -82,8 +82,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
     public void onBindViewHolder(@NonNull PostHolder holder, int i) {
         final Post post = this.posts.get(i);
         holder.tvComments.setOnClickListener(v -> listener.onClickPost(post));
-        holder.tvUserId.setText(String.format("User id: %s", post.getUserId()));
-        holder.tvPostId.setText(String.format("id: %s", post.getId()));
+        holder.tvUserId.setText(String.format("User id: %s", post.getUser_id()));
+        holder.tvPostId.setText(String.format("id: %s", post.get_id()));
         holder.tvPostText.setText(post.getText());
         holder.tvPostTitle.setText(post.getTitle());
         holder.tvBtnOptions.setOnClickListener(v -> {
@@ -95,7 +95,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
                         listener.onClickEdit(post);
                         break;
                     case R.id.p_delete:
-                        listener.onClickDelete(post.getId());
+                        listener.onClickDelete(post.get_id());
                         break;
                 }
                 return false;

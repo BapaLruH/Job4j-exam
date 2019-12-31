@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -20,15 +21,20 @@ import java.util.Map;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 import ru.job4j.retrofitexample.adapter.PostAdapter;
-import ru.job4j.retrofitexample.model.Post;
+import ru.job4j.retrofitexample.db.AppContentResolverWrapper;
+import ru.job4j.retrofitexample.db.DBManager;
+import ru.job4j.retrofitexample.db.dao.PostDao;
+import ru.job4j.retrofitexample.db.models.Post;
 import ru.job4j.retrofitexample.service.CommonApiUtil;
 
 public class MainActivity extends AppCompatActivity implements FragmentGetMethods.OnFragmentButtonClickListener, FragmentEditMethods.OnFragmentButtonClickListener, PostAdapter.OnClickPostListener {
     private static final String TAG = String.valueOf(MainActivity.class);
     static final String POST_EXTRAS = "Post";
     private CommonApiUtil apiUtil;
+    private PostDao postDao;
     private PostAdapter postAdapter;
     private RecyclerView rvPosts;
     private FragmentManager fManager;
@@ -44,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements FragmentGetMethod
         rvPosts = findViewById(R.id.rv_posts);
         rvPosts.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         rvPosts.setAdapter(postAdapter);
+        DBManager.init(new AppContentResolverWrapper(getApplicationContext()));
+        postDao = DBManager.getInstance().getPostDao();
     }
 
     @Override
@@ -89,27 +97,27 @@ public class MainActivity extends AppCompatActivity implements FragmentGetMethod
     @Override
     public void onGetPostByIdClicked(int id) {
         if (id > 0) {
-            responseHandler(apiUtil.getPostById(id), null, null);
+            storageHandler(apiUtil.getPostById(id), id);
         }
     }
 
     @Override
     public void onGetPostByQueryClicked(int id) {
         if (id > 0) {
-            responseHandler(apiUtil.getPostByQuery(id), null, null);
+            storageHandler(apiUtil.getPostByQuery(id), id);
         }
     }
 
     @Override
     public void onGetPostByMapQueryClicked(Map<String, String> ids) {
         if (!ids.isEmpty()) {
-            responseHandler(apiUtil.getPostByQueryMap(ids), null, null);
+            storageHandler(apiUtil.getPostByQueryMap(ids), Integer.parseInt(ids.get("id")));
         }
     }
 
     @Override
     public void onSaveButtonClick(Post post) {
-        if (post.getId() == null) {
+        if (post.get_id() == null) {
             responseHandler(apiUtil.createPost(post), "added", null);
         } else {
             responseHandler(apiUtil.putPost(post), "updated", null);
@@ -118,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements FragmentGetMethod
 
     @Override
     public void onPatchButtonClick(Post post) {
-        if (post.getId() != null) {
+        if (post.get_id() != null) {
             responseHandler(apiUtil.patchPost(post), "patched", null);
         }
     }
@@ -140,21 +148,57 @@ public class MainActivity extends AppCompatActivity implements FragmentGetMethod
                         if (response.isSuccessful()) {
                             Object object = response.body();
                             if (object instanceof List) {
-                                postAdapter.setPosts((List<Post>) object);
+                                List<Post> posts = (List<Post>) object;
+                                postDao.updateList(posts).subscribeOn(Schedulers.io()).subscribe();
+                                postAdapter.setPosts(posts);
                             } else if (object instanceof Post) {
                                 Post post = (Post) object;
                                 if (operation != null) {
+                                    postDao.updatePost(post).subscribeOn(Schedulers.io()).subscribe();
                                     postAdapter.updateItems(Collections.singletonList(post));
-                                } else {
-                                    postAdapter.setPosts(Collections.singletonList(post));
                                 }
-                                rsl = getStringByOperation(operation, post.getId());
+                                rsl = getStringByOperation(operation, post.get_id());
                             } else {
+                                postDao.deletePost(String.valueOf(id)).subscribeOn(Schedulers.io()).subscribe();
                                 postAdapter.removeItem(id);
                                 rsl = getStringByOperation(operation, id);
                             }
                         }
                         setStatusText(rsl);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, e.getLocalizedMessage());
+                    }
+                });
+    }
+
+    private void storageHandler(Single<? extends Response> single, int id) {
+        Single<List<Post>> postDb = postDao.getPostById(String.valueOf(id)).subscribeOn(Schedulers.io());
+        Single<List<Post>> postNetwork = single.flatMap(postResponse -> {
+            List<Post> postList = new ArrayList<>();
+            if (postResponse.isSuccessful()) {
+                Object object = postResponse.body();
+                if (object instanceof Post) {
+                    Post post = (Post) object;
+                    postList.add(post);
+                    postDao.createPost(post).subscribeOn(Schedulers.io()).subscribe();
+                } else if (object instanceof List) {
+                    postList = (List<Post>) object;
+                    postDao.updateList(postList).subscribeOn(Schedulers.io()).subscribe();
+                }
+            }
+            return Single.just(postList);
+        });
+        Single.concat(postDb, postNetwork)
+                .filter(list -> !list.isEmpty())
+                .first(Collections.emptyList())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSingleObserver<List<Post>>() {
+                    @Override
+                    public void onSuccess(List<Post> posts) {
+                        postAdapter.setPosts(posts);
                     }
 
                     @Override
@@ -181,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements FragmentGetMethod
     @Override
     public void onClickPost(Post post) {
         Intent intent = new Intent(getApplicationContext(), CommentsActivity.class);
-        intent.putExtra("id", post.getId());
+        intent.putExtra("id", post.get_id());
         startActivity(intent);
     }
 

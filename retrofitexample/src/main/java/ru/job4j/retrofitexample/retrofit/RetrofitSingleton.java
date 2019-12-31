@@ -18,8 +18,7 @@ public class RetrofitSingleton {
     private static RetrofitSingleton instance;
     private static final String BASE_URL = "https://jsonplaceholder.typicode.com/";
     private Retrofit mRetrofit;
-    private PostsAPI postsAPI;
-    private CommentsAPI commentsAPI;
+    private Api api;
 
     private RetrofitSingleton(Context context) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -46,8 +45,7 @@ public class RetrofitSingleton {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(client)
                 .build();
-        postsAPI = mRetrofit.create(PostsAPI.class);
-        commentsAPI = mRetrofit.create(CommentsAPI.class);
+        api = mRetrofit.create(Api.class);
     }
 
     public static RetrofitSingleton getInstance(Context context) {
@@ -57,11 +55,7 @@ public class RetrofitSingleton {
         return instance;
     }
 
-    public PostsAPI getPostsAPI() {
-        return postsAPI;
-    }
-
-    public CommentsAPI getCommentsAPI() {
-        return commentsAPI;
+    public Api getApi() {
+        return api;
     }
 }

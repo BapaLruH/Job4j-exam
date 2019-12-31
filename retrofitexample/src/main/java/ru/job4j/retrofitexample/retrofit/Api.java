@@ -17,9 +17,11 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
-import ru.job4j.retrofitexample.model.Post;
+import retrofit2.http.Url;
+import ru.job4j.retrofitexample.db.models.Comment;
+import ru.job4j.retrofitexample.db.models.Post;
 
-public interface PostsAPI {
+public interface Api {
     @GET("posts")
     Single<Response<List<Post>>> getPosts();
 
@@ -51,4 +53,7 @@ public interface PostsAPI {
 
     @PATCH("posts/{id}")
     Single<Response<Post>> patchPost(@Path("id") int id, @Body Post post);
+
+    @GET
+    Single<Response<List<Comment>>> getComments(@Url String url);
 }

@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import ru.job4j.retrofitexample.model.Post;
+import ru.job4j.retrofitexample.db.models.Post;
 
 public class FragmentEditMethods extends Fragment {
 
@@ -33,8 +33,8 @@ public class FragmentEditMethods extends Fragment {
         if (args != null) {
             Post post = (Post) args.getSerializable(MainActivity.POST_EXTRAS);
             if (post != null) {
-                id.setText(String.valueOf(post.getId()));
-                userId.setText(String.valueOf(post.getUserId()));
+                id.setText(String.valueOf(post.get_id()));
+                userId.setText(String.valueOf(post.getUser_id()));
                 title.setText(post.getTitle());
                 text.setText(post.getText());
             }

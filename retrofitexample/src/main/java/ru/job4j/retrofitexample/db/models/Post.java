@@ -1,12 +1,16 @@
-package ru.job4j.retrofitexample.model;
+package ru.job4j.retrofitexample.db.models;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Post implements Serializable {
-    private Integer userId;
-    private Integer id;
+import ru.job4j.retrofitexample.db.dbhelper.DBClass;
+
+public class Post implements Serializable, DBClass {
+    @SerializedName("userId")
+    private Integer user_id;
+    @SerializedName("id")
+    private Integer _id;
     private String title;
 
     @SerializedName("body")
@@ -17,29 +21,29 @@ public class Post implements Serializable {
 
     public Post(Integer id, Integer userId, String title, String text) {
         this(userId, title, text);
-        this.id = id;
+        this._id = id;
     }
 
     public Post(Integer userId, String title, String text) {
-        this.userId = userId;
+        this.user_id = userId;
         this.title = title;
         this.text = text;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getUser_id() {
+        return user_id;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUser_id(Integer user_id) {
+        this.user_id = user_id;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer get_id() {
+        return _id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void set_id(Integer _id) {
+        this._id = _id;
     }
 
     public String getTitle() {
@@ -54,11 +58,15 @@ public class Post implements Serializable {
         return text;
     }
 
+    public void setText(String text) {
+        this.text = text;
+    }
+
     @Override
     public String toString() {
         return "Post{" +
-                "userId=" + userId +
-                ", id=" + id +
+                "user_id=" + user_id +
+                ", _id=" + _id +
                 ", title='" + title + '\'' +
                 ", text='" + text + '\'' +
                 '}';

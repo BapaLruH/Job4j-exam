@@ -20,6 +20,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider
+            android:authorities="ru.job4j.retrofitexample"
+            android:name=".db.contentprovider.AppContentProvider"
+            android:exported="false" />
     </application>
 
 </manifest>
